@@ -51,3 +51,7 @@ async def create_journal_entry(entry: JournalEntryBase, db: db_dependency):
     db.refresh(db_entry)
     return db_entry
 
+@app.get("/entries", response_model=list[JournalEntryModel])
+async def read_entries(db: db_dependency, skip: int = 0, limit: int = 100):
+    transactions = db.query(models.JournalEntry).offset(skip).limit(limit).all()
+    return transactions
