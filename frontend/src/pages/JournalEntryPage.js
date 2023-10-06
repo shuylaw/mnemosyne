@@ -19,7 +19,7 @@ const JournalEntryPage = () => {
     return (
         <div>
             <h2>{journalEntry.title}</h2>
-            <JournalEntryMenu id={id} isEditing={isEditing} setIsEditing={setIsEditing} />
+            <JournalEntryMenu id={id} isEditing={isEditing} setIsEditing={setIsEditing} journalEntry={journalEntry} />
             {isEditing ? (
                 <textarea value={journalEntry.content} onChange={(e) => setJournalEntry({ ...journalEntry, content: e.target.value })} />
             ) : (

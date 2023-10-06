@@ -2,13 +2,14 @@
 import React from "react";
 import JournalService from "../services/JournalService";
 
-const JournalEntryMenu = ({ id, isEditing, setIsEditing }) => {
+const JournalEntryMenu = ({ id, isEditing, setIsEditing, journalEntry }) => {
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
     const handleSaveClick = async () => {
         setIsEditing(false);
+        await JournalService.update(id, journalEntry);
     };
 
     const handleDeleteClick = async () => {

@@ -17,6 +17,7 @@ const JournalService = {
     },
 
     async update(id, data) {
+        console.log(id, data)
         const response = await apiClient.patch(`/entry/${id}`, data);
         return response;
     },
