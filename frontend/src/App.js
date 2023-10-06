@@ -1,11 +1,13 @@
 import './App.css';
+import JournalsPage from './pages/JournalsPage';
 
 function App() {
   return (
     <div className="App">
-      There is nothing here right now
+      <JournalsPage />
     </div>
   );
 }
 
 export default App;
+
