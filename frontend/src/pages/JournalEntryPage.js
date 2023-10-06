@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import JournalService from "../services/JournalService";
+import JournalEntryMenu from "../components/JournalEntryMenu";
 
 const JournalEntryPage = () => {
     const { id } = useParams();
     const [journalEntry, setJournalEntry] = useState({});
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchJournalEntry = async () => {
@@ -16,9 +18,13 @@ const JournalEntryPage = () => {
 
     return (
         <div>
-            <h1>Journal Entry Page</h1>
-            <p>Title: {journalEntry.title}</p>
-            <p>Content: {journalEntry.content}</p>
+            <h2>{journalEntry.title}</h2>
+            <JournalEntryMenu id={id} isEditing={isEditing} setIsEditing={setIsEditing} />
+            {isEditing ? (
+                <textarea value={journalEntry.content} onChange={(e) => setJournalEntry({ ...journalEntry, content: e.target.value })} />
+            ) : (
+                <p>{journalEntry.content}</p>
+            )}
         </div>
     );
 }
