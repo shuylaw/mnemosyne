@@ -3,19 +3,19 @@ import JournalList from '../components/JournalList';
 import JournalService from '../services/JournalService';
 
 function JournalsPage() {
-    const [journals, setJournals] = useState([]);
+    const [journalEntries, setJournalEntries] = useState([]);
 
     useEffect(() => {
         const fetchJournals = async () => {
             const response = await JournalService.getAll();
-            setJournals(response);
+            setJournalEntries(response);
         };
         fetchJournals();
     }, []);
     return (
         <div>
             <h1>Journals</h1>
-            <JournalList journals={journals} />
+            <JournalList journals={journalEntries} />
         </div>
     );
 }

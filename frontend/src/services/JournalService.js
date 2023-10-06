@@ -7,22 +7,23 @@ const JournalService = {
     },
 
     async get(id) {
-        const response = await apiClient.get(`/entries/${id}`);
+        const response = await apiClient.get(`/entry/${id}`);
+        console.log(response);
         return response;
     },
 
     async create(data) {
-        const response = await apiClient.post('/entries', data);
+        const response = await apiClient.post('/entry', data);
         return response;
     },
 
     async update(id, data) {
-        const response = await apiClient.patch(`/entries/${id}`, data);
+        const response = await apiClient.patch(`/entry/${id}`, data);
         return response;
     },
 
     async delete(id) {
-        const response = await apiClient.delete(`/entries/${id}`);
+        const response = await apiClient.delete(`/entry/${id}`);
         return response;
     }
 };

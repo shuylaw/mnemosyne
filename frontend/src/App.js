@@ -1,13 +1,23 @@
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import JournalsPage from './pages/JournalsPage';
+import HomePage from './pages/HomePage';
+import JournalsPage from './pages/JournalEntriesPage';
+import JournalEntryPage from './pages/JournalEntryPage';
+
 
 function App() {
   return (
     <div className="App">
-      <JournalsPage />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/journals" element={<JournalsPage />} />
+          <Route path="/journals/:id" element={<JournalEntryPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
 
 export default App;
-

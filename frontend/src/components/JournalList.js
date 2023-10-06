@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 const JournalList = ({ journals }) => {
 
     return (
         <div>
             <ul>
                 {journals.map((journal) => (
-                    <li key={journal.id}>{journal.title}</li>
+                    <li key={journal.id}><Link to={`/journals/${journal.id}`}>{journal.title}</Link></li>
                 ))}
             </ul>
         </div>

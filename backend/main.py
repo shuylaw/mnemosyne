@@ -57,7 +57,14 @@ async def read_entries(db: db_dependency, skip: int = 0, limit: int = 100):
     transactions = db.query(models.JournalEntry).offset(skip).limit(limit).all()
     return transactions
 
-@app.patch("/entries/{entry_id}", response_model=JournalEntryModel)
+@app.get("/entry/{entry_id}", response_model=JournalEntryModel)
+async def read_entry(entry_id: int, db: db_dependency):
+    db_entry = db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
+    if db_entry is None:
+        raise HTTPException(status_code=404, detail="Entry not found")
+    return db_entry
+
+@app.patch("/entry/{entry_id}", response_model=JournalEntryModel)
 async def update_entry(entry_id: int, entry: JournalEntryBase, db: db_dependency):
     db_entry = db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
     if db_entry is None:
@@ -68,7 +75,7 @@ async def update_entry(entry_id: int, entry: JournalEntryBase, db: db_dependency
     db.refresh(db_entry)
     return db_entry
 
-@app.delete("/entries/{entry_id}")
+@app.delete("/entry/{entry_id}")
 async def delete_entry(entry_id: int, db: db_dependency):
     db_entry = db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
     if db_entry is None:
