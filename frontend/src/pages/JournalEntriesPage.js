@@ -9,6 +9,7 @@ function JournalsPage() {
         const fetchJournals = async () => {
             const response = await JournalService.getAll();
             setJournalEntries(response);
+            console.log(response);
         };
         fetchJournals();
     }, []);
