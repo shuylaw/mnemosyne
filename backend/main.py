@@ -18,7 +18,7 @@ app.add_middleware(
     allow_origins=origins,
 )
 
-class JournalEntryBase(Base):
+class JournalEntryBase(BaseModel):
     title: str
     content: str
     summary: str
