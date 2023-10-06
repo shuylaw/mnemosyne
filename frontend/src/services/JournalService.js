@@ -8,7 +8,6 @@ const JournalService = {
 
     async get(id) {
         const response = await apiClient.get(`/entry/${id}`);
-        console.log(response);
         return response;
     },
 
