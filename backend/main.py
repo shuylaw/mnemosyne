@@ -43,10 +43,11 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 models.Base.metadata.create_all(bind=engine)
 
-@app.post('/journal_entries', response_model=JournalEntryModel)
+@app.post('/entries', response_model=JournalEntryModel)
 async def create_journal_entry(entry: JournalEntryBase, db: db_dependency):
     db_entry = models.JournalEntry(**entry.model_dump())
     db.add(db_entry)
     db.commit()
     db.refresh(db_entry)
     return db_entry
+
