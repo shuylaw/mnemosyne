@@ -44,7 +44,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 models.Base.metadata.create_all(bind=engine)
 
 @app.post('/entries', response_model=JournalEntryModel)
-async def create_journal_entry(entry: JournalEntryBase, db: db_dependency):
+async def create_entry(entry: JournalEntryBase, db: db_dependency):
     db_entry = models.JournalEntry(**entry.model_dump())
     db.add(db_entry)
     db.commit()
@@ -55,3 +55,23 @@ async def create_journal_entry(entry: JournalEntryBase, db: db_dependency):
 async def read_entries(db: db_dependency, skip: int = 0, limit: int = 100):
     transactions = db.query(models.JournalEntry).offset(skip).limit(limit).all()
     return transactions
+
+@app.patch("/entries/{entry_id}", response_model=JournalEntryModel)
+async def update_entry(entry_id: int, entry: JournalEntryBase, db: db_dependency):
+    db_entry = db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
+    if db_entry is None:
+        raise HTTPException(status_code=404, detail="Entry not found")
+    for key, value in entry.model_dump().items():
+        setattr(db_entry, key, value)
+    db.commit()
+    db.refresh(db_entry)
+    return db_entry
+
+@app.delete("/entries/{entry_id}")
+async def delete_entry(entry_id: int, db: db_dependency):
+    db_entry = db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
+    if db_entry is None:
+        raise HTTPException(status_code=404, detail="Entry not found")
+    db.delete(db_entry)
+    db.commit()
+    return {"message": "Entry deleted successfully"}
