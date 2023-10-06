@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import JournalService from "../services/JournalService";
 import JournalEntryMenu from "../components/JournalEntryMenu";
 
@@ -23,8 +23,14 @@ const JournalEntryPage = () => {
             {isEditing ? (
                 <textarea value={journalEntry.content} onChange={(e) => setJournalEntry({ ...journalEntry, content: e.target.value })} />
             ) : (
-                <p>{journalEntry.content}</p>
+                <div>
+                    <div>Date: {journalEntry.date}</div>
+                    <div>Set Private: {journalEntry.is_private}</div>
+                    <div>Sentiment: {journalEntry.sentiment}</div>
+                    <div>Content: {journalEntry.content}</div>
+                </div>
             )}
+            <Link to="/journals">Back to Journals</Link>
         </div>
     );
 }

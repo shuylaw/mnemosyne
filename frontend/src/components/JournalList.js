@@ -6,7 +6,7 @@ const JournalList = ({ journals }) => {
         <div>
             <ul>
                 {journals.map((journal) => (
-                    <li key={journal.id}><Link to={`/journals/${journal.id}`}>{journal.title}</Link></li>
+                    <li key={journal.id}>{journal.date} - <Link to={`/journals/${journal.id}`}>{journal.title}</Link></li>
                 ))}
             </ul>
         </div>
