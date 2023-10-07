@@ -28,11 +28,15 @@ The following section just helps me keep track of what I'm doing.
 - React
 - Langchain
 
-## basic to-do
+## to-do
 - [x] build CRUD enpoints for journal entries
-- [ ] web interface
+- [x] web interface
 - [ ] figure out what useful info can be extracted from journal entries
 - [ ] anonymize names if sending entries to external API
 - [ ] langchain it to OpenAI
 - [ ] local LLM
 - [ ] implement search
+- [ ] allow bulk import from Joplin Data API
+- [ ] write tests
+- [ ] remake with Django Rest Framework
+- [ ] remake with NextJS
