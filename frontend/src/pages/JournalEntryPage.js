@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import JournalService from "../services/JournalService";
+import SingleJournalEntry from "../components/SingleJournalEntry";
 import JournalEntryMenu from "../components/JournalEntryMenu";
 import JournalEntryEditableForm from "../components/JournalEntryEditableForm";
 import useLoading from "../hooks/useLoading";
@@ -53,12 +54,7 @@ const JournalEntryPage = () => {
                 </div>
             ) : (
                 <div>
-                    <div>Date: {journalEntry.date}</div>
-                    <div>Set Private: {journalEntry.is_private}</div>
-                    <div>Sentiment: {journalEntry.sentiment}</div>
-                    <div><MDEditor.Markdown
-                        source={journalEntry.content}
-                    /></div>
+                    <SingleJournalEntry journalEntry={journalEntry} />
                 </div>
             )}
             <Link to="/journals">Back to Journals</Link>
