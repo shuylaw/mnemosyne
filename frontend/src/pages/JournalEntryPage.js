@@ -12,13 +12,13 @@ const JournalEntryPage = ({ initialEditState = false }) => {
     const [journalEntry, setJournalEntry] = useState({});
     const [isEditing, setIsEditing] = useState(initialEditState);
     const [isLoading, setIsLoading] = useLoading();
-    const [titleDisplay, setTitleDisplay] = useState('');
+    const [titleDisplay, setTitleDisplay] = useState('Editing');
 
     useEffect(() => {
         const fetchJournalEntry = async () => {
             const data = await JournalService.get(id);
             setJournalEntry(data);
-            setTitleDisplay(data.title);
+            if (!isEditing) setTitleDisplay(data.title);
         };
         fetchJournalEntry();
     }, [id]);
