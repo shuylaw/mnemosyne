@@ -14,6 +14,7 @@ function App() {
           <Route path="/journals" element={<JournalsPage />} />
           <Route path="/journals/new" element={<CreateNewEntryPage />} />
           <Route path="/journals/:id" element={<JournalEntryPage />} />
+          <Route path="/journals/:id/edit" element={<JournalEntryPage initialEditState={true} />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -7,10 +7,10 @@ import JournalEntryEditableForm from "../components/JournalEntryEditableForm";
 import useLoading from "../hooks/useLoading";
 import MDEditor from '@uiw/react-md-editor';
 
-const JournalEntryPage = () => {
+const JournalEntryPage = ({ initialEditState = false }) => {
     const { id } = useParams();
     const [journalEntry, setJournalEntry] = useState({});
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(initialEditState);
     const [isLoading, setIsLoading] = useLoading();
     const [titleDisplay, setTitleDisplay] = useState('');
 
