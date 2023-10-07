@@ -17,7 +17,6 @@ function JournalsPage() {
     return (
         <div className='text-center'>
             <h1>Journal Entries</h1>
-            <div className='m-5'><Link to="/journals/new">Create New Entry</Link></div>
             <EntryList journals={journalEntries} />
         </div>
     );

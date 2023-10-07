@@ -50,7 +50,7 @@ const JournalEntryPage = ({ initialEditState = false }) => {
     }
 
     return (
-        <div>
+        <div className="text-left">
             <h2>{titleDisplay}</h2>
             {isEditing ? (
                 <div>
