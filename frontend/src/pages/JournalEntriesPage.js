@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import EntryList from '../components/EntryList';
+import JournalEntriesList from '../components/JournalEntriesList';
 import JournalService from '../services/JournalService';
 import { Link } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ function JournalsPage() {
     return (
         <div className='text-center'>
             <h1>Journal Entries</h1>
-            <EntryList journals={journalEntries} />
+            <JournalEntriesList journals={journalEntries} />
         </div>
     );
 }

@@ -28,13 +28,13 @@ const JournalEntryEditableForm = ({ formData, handleChange, handleSubmit, isLoad
                 preview="edit"
                 extraCommands={[]}
             />
-            <label htmlFor="is_private">Set Private </label>
+            {/* <label htmlFor="is_private">Set Private </label>
             <input
                 type="checkbox"
                 value={formData.is_private}
                 onChange={handleChange}
                 name="is_private"
-            /><br />
+            /><br /> */}
             <hr className='my-5'></hr>
             <h3>Preview Your Entry</h3>
             <div className='border min-h-[200px] p-2 rounded-lg my-2'>

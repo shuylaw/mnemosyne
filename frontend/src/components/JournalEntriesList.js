@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BsFillPencilFill, BsTrashFill } from 'react-icons/bs';
 import JournalService from '../services/JournalService';
 
-const EntryList = ({ journals }) => {
+const JournalEntriesList = ({ journals }) => {
     const navigate = useNavigate();
 
     const handleEditIconClick = (id) => {
@@ -57,4 +57,4 @@ const EntryList = ({ journals }) => {
     );
 };
 
-export default EntryList;
+export default JournalEntriesList;
