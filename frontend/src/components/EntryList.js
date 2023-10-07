@@ -1,6 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BsFillPencilFill, BsTrashFill } from 'react-icons/bs';
+
 const EntryList = ({ journals }) => {
+    const navigate = useNavigate();
+
+    const handleRowClick = (id) => {
+        navigate(`/journals/${id}`);
+    };
 
     return (
         <div className="p-5 rounded-lg">
@@ -8,18 +15,21 @@ const EntryList = ({ journals }) => {
                 <tr>
                     <th className="w-1/5">Date</th>
                     <th>Title</th>
-                    <th>Action</th></tr>
+                    <th className='text-center'>Action</th>
+                </tr>
                 {journals.map((journal) => (
                     <tr
                         className="hover hover:shadow-lg"
                         key={journal.id}
-                    ><td>{journal.date}</td>
-                        <td onClick={() => window.location.href = `/journals/${journal.id}`} className="clickable"><Link to={`/journals/${journal.id}`}>{journal.title}</Link>
-                        </td><td>Edit | Delete</td>
+                    >
+                        <td>{journal.date}</td>
+                        <td className="clickable" onClick={() => handleRowClick(journal.id)}>
+                            <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
+                        </td>
+                        <td className='flex justify-center'><BsFillPencilFill className='mx-2' /> <BsTrashFill className='mx-2' /></td>
                     </tr>
                 ))}
             </table>
-
         </div>
     );
 };
