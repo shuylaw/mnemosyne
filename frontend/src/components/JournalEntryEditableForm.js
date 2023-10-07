@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import MDEditor from '@uiw/react-md-editor';
+import React from 'react';
 
-const NewJournalEntryForm = ({ formData, handleChange, handleSubmit, isLoading }) => {
+const JournalEntryEditableForm = ({ formData, handleChange, handleSubmit, isLoading }) => {
 
+    const handleMDEditorChange = (value) => {
+        handleChange({
+            target: {
+                name: 'content',
+                value,
+            },
+        });
+    };
     return (
         <form onSubmit={handleSubmit}>
             <input
@@ -11,12 +20,7 @@ const NewJournalEntryForm = ({ formData, handleChange, handleSubmit, isLoading }
                 onChange={handleChange}
                 placeholder="Title"
             /><br />
-            <textarea
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                placeholder="Content"
-            /><br />
+            <MDEditor value={formData.content} onChange={handleMDEditorChange} /><br />
             <label htmlFor="is_private">Set Private </label>
             <input
                 type="checkbox"
@@ -31,4 +35,4 @@ const NewJournalEntryForm = ({ formData, handleChange, handleSubmit, isLoading }
     );
 };
 
-export default NewJournalEntryForm;
+export default JournalEntryEditableForm;

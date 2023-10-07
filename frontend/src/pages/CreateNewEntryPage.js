@@ -1,18 +1,23 @@
-import React, { useState } from "react";
-import NewJournalEntryForm from "../components/NewJournalEntryForm";
-import JournalService from "../services/JournalService";
+import React, { useState } from 'react';
+import JournalEntryEditableForm from '../components/JournalEntryEditableForm';
+import JournalService from '../services/JournalService';
+import useLoading from '../hooks/useLoading';
+import { Link } from 'react-router-dom';
 
 const CreateNewEntryPage = () => {
-    const [formData, setFormData] = useState({
+    const initialState = {
         title: '',
         content: '',
-        date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD
+        date: new Date().toISOString().slice(0, 10),
         sentiment: 0,
         is_private: false,
         summary: ''
-    });
+    };
+
+    const [formData, setFormData] = useState(initialState);
 
     const handleChange = (e) => {
+        console.log(e)
         const { name, value, type, checked } = e.target;
         const finalValue = type === 'checkbox' ? checked : value;
         setFormData({
@@ -21,24 +26,28 @@ const CreateNewEntryPage = () => {
         });
     };
 
-    console.log(formData)
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useLoading();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        console.log("form data before sending to API", formData)
         await JournalService.create(formData);
-        window.location.href = "/journals";
+        window.location.href = '/journals';
         setIsLoading(false);
     };
 
     return (
         <div>
             <h1>Create New Journal Entry</h1>
-            <NewJournalEntryForm handleSubmit={handleSubmit} isLoading={isLoading} handleChange={handleChange} formData={formData} />
+            <JournalEntryEditableForm
+                handleSubmit={handleSubmit}
+                isLoading={isLoading}
+                handleChange={handleChange}
+                formData={formData}
+            />
+            <Link to="/journals">Back to Journals</Link>
         </div>
     );
-}
+};
 
 export default CreateNewEntryPage;
