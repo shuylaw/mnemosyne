@@ -40,3 +40,5 @@ The following section just helps me keep track of what I'm doing.
 - [ ] write tests
 - [ ] remake with Django Rest Framework
 - [ ] remake with NextJS
+- [ ] dockerize it
+- [ ] allow multiple users and authentication
