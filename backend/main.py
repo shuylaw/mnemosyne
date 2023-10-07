@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from typing import Annotated
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from pydantic import BaseModel
 from database import SessionLocal, engine
 import models
@@ -57,7 +58,7 @@ async def create_entry(entry: JournalEntryBase, db: db_dependency):
 
 @app.get("/entries", response_model=list[JournalEntryModel])
 async def read_entries(db: db_dependency, skip: int = 0, limit: int = 100):
-    transactions = db.query(models.JournalEntry).offset(skip).limit(limit).all()
+    transactions = db.query(models.JournalEntry).order_by(desc(models.JournalEntry.id)).offset(skip).limit(limit).all()
     return transactions
 
 @app.get("/entry/{entry_id}", response_model=JournalEntryModel)
