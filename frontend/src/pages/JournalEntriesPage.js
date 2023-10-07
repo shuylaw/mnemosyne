@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import JournalList from '../components/JournalList';
+import EntryList from '../components/EntryList';
 import JournalService from '../services/JournalService';
 import { Link } from 'react-router-dom';
 
@@ -15,10 +15,10 @@ function JournalsPage() {
         fetchJournals();
     }, []);
     return (
-        <div>
-            <h1>Journals</h1>
-            <Link to="/journals/new">Create New Entry</Link>
-            <JournalList journals={journalEntries} />
+        <div className='text-center'>
+            <h1>Journal Entries</h1>
+            <div className='m-5'><Link to="/journals/new">Create New Entry</Link></div>
+            <EntryList journals={journalEntries} />
         </div>
     );
 }

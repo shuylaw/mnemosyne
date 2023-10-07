@@ -14,14 +14,13 @@ const JournalEntryEditableForm = ({ formData, handleChange, handleSubmit, isLoad
     return (
         <form onSubmit={handleSubmit}>
             <div className='flex'>
-                <label htmlFor="title" className='pr-2 py-1 my-5 font-bold'>Title: </label>
                 <input
                     type="text"
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="Enter your title here..."
-                    className='w-full border border-inherit rounded-lg px-2 py-1 mx-2 my-5'
+                    className='text-2xl font-bold w-full rounded-lg px-2 py-1 my-5'
                 /></div>
             <MDEditor
                 value={formData.content}

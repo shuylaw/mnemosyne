@@ -25,7 +25,7 @@ const JournalEntryPage = () => {
 
     useEffect(() => {
         if (isEditing) {
-            setTitleDisplay("Editing: " + journalEntry.title);
+            setTitleDisplay("Editing");
         } else {
             setTitleDisplay(journalEntry.title);
         }
@@ -52,7 +52,6 @@ const JournalEntryPage = () => {
     return (
         <div>
             <h2>{titleDisplay}</h2>
-            <JournalEntryMenu id={id} isEditing={isEditing} setIsEditing={setIsEditing} journalEntry={journalEntry} />
             {isEditing ? (
                 <div>
                     <JournalEntryEditableForm
@@ -67,6 +66,8 @@ const JournalEntryPage = () => {
                     <SingleJournalEntry journalEntry={journalEntry} />
                 </div>
             )}
+            <JournalEntryMenu id={id} isEditing={isEditing} setIsEditing={setIsEditing} journalEntry={journalEntry} />
+
             <Link to="/journals">Back to Journals</Link>
         </div>
     );
