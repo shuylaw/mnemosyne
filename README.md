@@ -29,9 +29,10 @@ The following section just helps me keep track of what I'm doing.
 - Langchain
 
 ## basic to-do
-- [ ] build CRUD enpoints for journal entries
+- [x] build CRUD enpoints for journal entries
 - [ ] web interface
 - [ ] figure out what useful info can be extracted from journal entries
 - [ ] anonymize names if sending entries to external API
 - [ ] langchain it to OpenAI
 - [ ] local LLM
+- [ ] implement search
