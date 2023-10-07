@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<JournalsPage />} />
           <Route path="/journals" element={<JournalsPage />} />
           <Route path="/journals/new" element={<CreateNewEntryPage />} />
           <Route path="/journals/:id" element={<JournalEntryPage />} />
