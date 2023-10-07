@@ -12,23 +12,27 @@ const EntryList = ({ journals }) => {
     return (
         <div className="p-5 rounded-lg">
             <table className="table table-md">
-                <tr>
-                    <th className="w-1/5">Date</th>
-                    <th>Title</th>
-                    <th className='text-center'>Action</th>
-                </tr>
-                {journals.map((journal) => (
-                    <tr
-                        className="hover hover:shadow-lg"
-                        key={journal.id}
-                    >
-                        <td>{journal.date}</td>
-                        <td className="clickable" onClick={() => handleRowClick(journal.id)}>
-                            <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
-                        </td>
-                        <td className='flex justify-center'><BsFillPencilFill className='mx-2' /> <BsTrashFill className='mx-2' /></td>
+                <thead>
+                    <tr>
+                        <th className="w-1/5">Date</th>
+                        <th>Title</th>
+                        <th className='float-right'>Action</th>
                     </tr>
-                ))}
+                </thead>
+                <tbody>
+                    {journals.map((journal) => (
+                        <tr
+                            className="hover hover:shadow-lg"
+                            key={journal.id}
+                        >
+                            <td>{journal.date}</td>
+                            <td className="clickable" onClick={() => handleRowClick(journal.id)}>
+                                <Link to={`/journals/${journal.id}`}>{journal.title}</Link>
+                            </td>
+                            <td className='flex float-right'><div className='flex justify-center'><BsFillPencilFill className='mx-2' /> <BsTrashFill className='ml-2' /></div></td>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </div>
     );
