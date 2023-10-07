@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
-import HomePage from './pages/HomePage';
 import JournalsPage from './pages/JournalEntriesPage';
 import CreateNewEntryPage from './pages/CreateNewEntryPage';
 import JournalEntryPage from './pages/JournalEntryPage';
@@ -9,7 +7,7 @@ import JournalEntryPage from './pages/JournalEntryPage';
 
 function App() {
   return (
-    <div className="App">
+    <div className="container">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<JournalsPage />} />

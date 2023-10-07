@@ -12,14 +12,24 @@ const JournalEntryPage = () => {
     const [journalEntry, setJournalEntry] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useLoading();
+    const [titleDisplay, setTitleDisplay] = useState('');
 
     useEffect(() => {
         const fetchJournalEntry = async () => {
             const data = await JournalService.get(id);
             setJournalEntry(data);
+            setTitleDisplay(data.title);
         };
         fetchJournalEntry();
     }, [id]);
+
+    useEffect(() => {
+        if (isEditing) {
+            setTitleDisplay("Editing: " + journalEntry.title);
+        } else {
+            setTitleDisplay(journalEntry.title);
+        }
+    }, [isEditing]);
 
     const handleChange = (e) => {
         console.log(e)
@@ -41,7 +51,7 @@ const JournalEntryPage = () => {
 
     return (
         <div>
-            <h2>{journalEntry.title}</h2>
+            <h2>{titleDisplay}</h2>
             <JournalEntryMenu id={id} isEditing={isEditing} setIsEditing={setIsEditing} journalEntry={journalEntry} />
             {isEditing ? (
                 <div>

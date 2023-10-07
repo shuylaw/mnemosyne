@@ -38,7 +38,7 @@ const CreateNewEntryPage = () => {
 
     return (
         <div>
-            <h1>Create New Journal Entry</h1>
+            <h2>Create New Journal Entry</h2>
             <JournalEntryEditableForm
                 handleSubmit={handleSubmit}
                 isLoading={isLoading}
