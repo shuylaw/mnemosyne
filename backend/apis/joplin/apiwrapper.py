@@ -206,7 +206,7 @@ class JoplinFoldersAPI(JoplinBaseApi):
 
 class JoplinResourcesAPI(JoplinBaseApi):
     """
-    Joplin Resources API Subclass
+    Joplin API for resources (files) associated with notes.
     """
 
     def get_all_resources(self):
@@ -338,5 +338,134 @@ class JoplinResourcesAPI(JoplinBaseApi):
         """
         response = requests.delete(
             f"{self.base_url}/resources/{resource_id}", params={"token": self.token}
+        )
+        return response.status_code == 204
+
+
+class JoplinTagsAPI(JoplinBaseApi):
+    """
+    Joplin API for tags.
+    """
+
+    def get_all_tags(self):
+        """
+        Get all tags.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.get(f"{self.base_url}/tags", params={"token": self.token})
+        return response.json()
+
+    def get_tag(self, tag_id):
+        """
+        Get a specific tag by ID.
+
+        Args:
+            tag_id (str): The ID of the tag.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.get(
+            f"{self.base_url}/tags/{tag_id}", params={"token": self.token}
+        )
+        return response.json()
+
+    def get_notes_with_tag(self, tag_id):
+        """
+        Get all the notes with this tag.
+
+        Args:
+            tag_id (str): The ID of the tag.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.get(
+            f"{self.base_url}/tags/{tag_id}/notes", params={"token": self.token}
+        )
+        return response.json()
+
+    def create_tag(self, title):
+        """
+        Create a new tag.
+
+        Args:
+            title (str): The title of the tag.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        payload = {"title": title}
+        response = requests.post(
+            f"{self.base_url}/tags", params={"token": self.token}, json=payload
+        )
+        return response.json()
+
+    def add_tag_to_note(self, tag_id, note_id):
+        """
+        Add a tag to a note.
+
+        Args:
+            tag_id (str): The ID of the tag.
+            note_id (str): The ID of the note.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        payload = {"id": note_id}
+        response = requests.post(
+            f"{self.base_url}/tags/{tag_id}/notes",
+            params={"token": self.token},
+            json=payload,
+        )
+        return response.json()
+
+    def update_tag(self, tag_id, **kwargs):
+        """
+        Update a tag.
+
+        Args:
+            tag_id (str): The ID of the tag.
+            **kwargs: Additional properties to update.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.put(
+            f"{self.base_url}/tags/{tag_id}", params={"token": self.token}, json=kwargs
+        )
+        return response.json()
+
+    def delete_tag(self, tag_id):
+        """
+        Delete a tag.
+
+        Args:
+            tag_id (str): The ID of the tag.
+
+        Returns:
+            bool: True if the tag was deleted successfully, False otherwise.
+        """
+        response = requests.delete(
+            f"{self.base_url}/tags/{tag_id}", params={"token": self.token}
+        )
+        return response.status_code == 204
+
+    def remove_tag_from_note(self, tag_id, note_id):
+        """
+        Remove a tag from a note.
+
+        Args:
+            tag_id (str): The ID of the tag.
+            note_id (str): The ID of the note.
+
+        Returns:
+            bool: True if the tag was removed successfully, False otherwise.
+        """
+        response = requests.delete(
+            f"{self.base_url}/tags/{tag_id}/notes/{note_id}",
+            params={"token": self.token},
         )
         return response.status_code == 204
