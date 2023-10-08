@@ -3,6 +3,8 @@ import time
 
 
 class JoplinBaseApi:
+    """Base class for Joplin API to handle token and port discovery"""
+
     def __init__(self, token, port=41184):
         self.token = token
         self.port = port
@@ -64,6 +66,8 @@ class JoplinBaseApi:
 
 
 class JoplinNotesAPI(JoplinBaseApi):
+    """Joplin API for notes"""
+
     def create_note(
         self,
         title,
@@ -151,3 +155,188 @@ class JoplinNotesAPI(JoplinBaseApi):
             f"{self.base_url}/notes/{note_id}/resources", params={"token": self.token}
         )
         return response.json()
+
+
+class JoplinFoldersAPI(JoplinBaseApi):
+    """Joplin API for folders / notebooks"""
+
+    # TODO: Implement pagination if available for folders
+    def get_all_folders(self):
+        response = requests.get(
+            f"{self.base_url}/folders", params={"token": self.token}
+        )
+        return response.json()
+
+    def get_folder(self, folder_id):
+        response = requests.get(
+            f"{self.base_url}/folders/{folder_id}", params={"token": self.token}
+        )
+        return response.json()
+
+    def get_notes_in_folder(self, folder_id):
+        response = requests.get(
+            f"{self.base_url}/folders/{folder_id}/notes", params={"token": self.token}
+        )
+        return response.json()
+
+    def create_folder(self, title, **kwargs):
+        payload = {"title": title}
+        payload.update(kwargs)
+        response = requests.post(
+            f"{self.base_url}/folders", params={"token": self.token}, json=payload
+        )
+        return response.json()
+
+    def update_folder(self, folder_id, **kwargs):
+        payload = {}
+        payload.update(kwargs)
+        response = requests.put(
+            f"{self.base_url}/folders/{folder_id}",
+            params={"token": self.token},
+            json=payload,
+        )
+        return response.json()
+
+    def delete_folder(self, folder_id):
+        response = requests.delete(
+            f"{self.base_url}/folders/{folder_id}", params={"token": self.token}
+        )
+        return response.status_code == 204
+
+
+class JoplinResourcesAPI(JoplinBaseApi):
+    """
+    Joplin Resources API Subclass
+    """
+
+    def get_all_resources(self):
+        """
+        Get all resources.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.get(
+            f"{self.base_url}/resources", params={"token": self.token}
+        )
+        return response.json()
+
+    def get_resource(self, resource_id):
+        """
+        Get a specific resource by ID.
+
+        Args:
+            resource_id (str): The ID of the resource.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.get(
+            f"{self.base_url}/resources/{resource_id}", params={"token": self.token}
+        )
+        return response.json()
+
+    def get_resource_file(self, resource_id):
+        """
+        Get the actual file associated with a resource.
+
+        Args:
+            resource_id (str): The ID of the resource.
+
+        Returns:
+            bytes: The file content.
+        """
+        response = requests.get(
+            f"{self.base_url}/resources/{resource_id}/file",
+            params={"token": self.token},
+        )
+        return response.content
+
+    def get_resource_notes(self, resource_id):
+        """
+        Get the notes associated with a resource.
+
+        Args:
+            resource_id (str): The ID of the resource.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        response = requests.get(
+            f"{self.base_url}/resources/{resource_id}/notes",
+            params={"token": self.token},
+        )
+        return response.json()
+
+    def create_resource(self, file_path, title=None):
+        """
+        Create a new resource.
+
+        Args:
+            file_path (str): The path to the file to upload.
+            title (str, optional): The title of the resource.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        with open(file_path, "rb") as f:
+            files = {"data": f}
+            if title:
+                props = {"title": title}
+                response = requests.post(
+                    f"{self.base_url}/resources",
+                    params={"token": self.token},
+                    files=files,
+                    data={"props": json.dumps(props)},
+                )
+            else:
+                response = requests.post(
+                    f"{self.base_url}/resources",
+                    params={"token": self.token},
+                    files=files,
+                )
+        return response.json()
+
+    def update_resource(self, resource_id, file_path=None, **kwargs):
+        """
+        Update a resource.
+
+        Args:
+            resource_id (str): The ID of the resource.
+            file_path (str, optional): The path to the new file to upload.
+            **kwargs: Additional properties to update.
+
+        Returns:
+            dict: JSON response from the API.
+        """
+        if file_path:
+            with open(file_path, "rb") as f:
+                files = {"data": f}
+                response = requests.put(
+                    f"{self.base_url}/resources/{resource_id}",
+                    params={"token": self.token},
+                    files=files,
+                    data={"props": json.dumps(kwargs)},
+                )
+        else:
+            response = requests.put(
+                f"{self.base_url}/resources/{resource_id}",
+                params={"token": self.token},
+                json=kwargs,
+            )
+        return response.json()
+
+    def delete_resource(self, resource_id):
+        """
+        Delete a resource.
+
+        Args:
+            resource_id (str): The ID of the resource.
+
+        Returns:
+            bool: True if the resource was deleted successfully, False otherwise.
+        """
+        response = requests.delete(
+            f"{self.base_url}/resources/{resource_id}", params={"token": self.token}
+        )
+        return response.status_code == 204
