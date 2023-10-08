@@ -5,12 +5,15 @@ import time
 class JoplinBaseApi:
     """Base class for Joplin API to handle token and port discovery"""
 
+    # TODO: validate_and_update_token if token is expired or invalid
     def __init__(self, token, port=41184):
+        """Initialize the API wrapper with the token and port"""
         self.token = token
         self.port = port
         self.base_url = f"http://localhost:{self.port}"
 
     def request_token(self):
+        """Request a new token from the Joplin API"""
         try:
             # Step 1: Initiate the auth request
             response = requests.post(f"{self.base_url}/auth")
@@ -40,6 +43,7 @@ class JoplinBaseApi:
             return False, str(e)
 
     def discover_port(self):
+        """Discover the port on which Joplin API is running"""
         for port in range(41184, 41195):
             try:
                 response = requests.get(f"http://localhost:{port}/ping")
@@ -52,6 +56,7 @@ class JoplinBaseApi:
                 continue
 
     def validate_and_update_token(self):
+        """Validate the token and update it if required"""
         try:
             response = requests.get(
                 f"{self.base_url}/notes", params={"token": self.token}
@@ -77,6 +82,7 @@ class JoplinNotesAPI(JoplinBaseApi):
         custom_id=None,
         **kwargs,
     ):
+        """Create a new note"""
         payload = {"title": title}
         if body:
             payload["body"] = body
@@ -93,6 +99,7 @@ class JoplinNotesAPI(JoplinBaseApi):
         return response.json()
 
     def get_note(self, note_id, fields=None):
+        """Get a specific note by ID"""
         params = {"token": self.token}
         if fields:
             params["fields"] = ",".join(fields)
@@ -100,6 +107,7 @@ class JoplinNotesAPI(JoplinBaseApi):
         return response.json()
 
     def update_note(self, note_id, **kwargs):
+        """Update a note by ID"""
         payload = {}
         payload.update(kwargs)
         response = requests.put(
@@ -110,12 +118,14 @@ class JoplinNotesAPI(JoplinBaseApi):
         return response.json()
 
     def delete_note(self, note_id):
+        """Delete a note by ID"""
         response = requests.delete(
             f"{self.base_url}/notes/{note_id}", params={"token": self.token}
         )
         return response.status_code == 204
 
     def search(self, query, item_type=None, fields=None):
+        """Search for notes"""
         params = {"query": query, "token": self.token}
         if item_type:
             params["type"] = item_type
@@ -124,9 +134,12 @@ class JoplinNotesAPI(JoplinBaseApi):
         response = requests.get(f"{self.base_url}/search", params=params)
         return response.json()
 
+    # TODO: Implement fetching limited number of notes
+
     def fetch_all_notes(
         self, page=1, limit=10, order_by="updated_time", order_dir="ASC"
     ):
+        """Fetch all notes from Joplin API"""
         notes = []
         while True:
             params = {
@@ -145,12 +158,14 @@ class JoplinNotesAPI(JoplinBaseApi):
         return notes
 
     def get_note_tags(self, note_id):
+        """Get all tags associated with a note"""
         response = requests.get(
             f"{self.base_url}/notes/{note_id}/tags", params={"token": self.token}
         )
         return response.json()
 
     def get_note_resources(self, note_id):
+        """Get all resources associated with a note"""
         response = requests.get(
             f"{self.base_url}/notes/{note_id}/resources", params={"token": self.token}
         )
@@ -162,24 +177,28 @@ class JoplinFoldersAPI(JoplinBaseApi):
 
     # TODO: Implement pagination if available for folders
     def get_all_folders(self):
+        """Get all folders"""
         response = requests.get(
             f"{self.base_url}/folders", params={"token": self.token}
         )
         return response.json()
 
     def get_folder(self, folder_id):
+        """Get a specific folder by ID"""
         response = requests.get(
             f"{self.base_url}/folders/{folder_id}", params={"token": self.token}
         )
         return response.json()
 
     def get_notes_in_folder(self, folder_id):
+        """Get all notes in a folder"""
         response = requests.get(
             f"{self.base_url}/folders/{folder_id}/notes", params={"token": self.token}
         )
         return response.json()
 
     def create_folder(self, title, **kwargs):
+        """Create a new folder"""
         payload = {"title": title}
         payload.update(kwargs)
         response = requests.post(
@@ -188,6 +207,7 @@ class JoplinFoldersAPI(JoplinBaseApi):
         return response.json()
 
     def update_folder(self, folder_id, **kwargs):
+        """Update a folder by ID"""
         payload = {}
         payload.update(kwargs)
         response = requests.put(
@@ -198,6 +218,7 @@ class JoplinFoldersAPI(JoplinBaseApi):
         return response.json()
 
     def delete_folder(self, folder_id):
+        """Delete a folder by ID"""
         response = requests.delete(
             f"{self.base_url}/folders/{folder_id}", params={"token": self.token}
         )
@@ -469,3 +490,72 @@ class JoplinTagsAPI(JoplinBaseApi):
             params={"token": self.token},
         )
         return response.status_code == 204
+
+
+class JoplinRevisionsAPI(JoplinBaseApi):
+    """
+    Joplin API for revisions.
+    """
+
+    def get_all_revisions(self):
+        """Get all revisions."""
+        response = requests.get(
+            f"{self.base_url}/revisions", params={"token": self.token}
+        )
+        return response.json()
+
+    def get_revision(self, revision_id):
+        """Get a specific revision by its ID."""
+        response = requests.get(
+            f"{self.base_url}/revisions/{revision_id}", params={"token": self.token}
+        )
+        return response.json()
+
+    def create_revision(self, **kwargs):
+        """Create a new revision."""
+        payload = {}
+        payload.update(kwargs)
+        response = requests.post(
+            f"{self.base_url}/revisions", params={"token": self.token}, json=payload
+        )
+        return response.json()
+
+    def update_revision(self, revision_id, **kwargs):
+        """Update an existing revision."""
+        payload = {}
+        payload.update(kwargs)
+        response = requests.put(
+            f"{self.base_url}/revisions/{revision_id}",
+            params={"token": self.token},
+            json=payload,
+        )
+        return response.json()
+
+    def delete_revision(self, revision_id):
+        """Delete a revision by its ID."""
+        response = requests.delete(
+            f"{self.base_url}/revisions/{revision_id}", params={"token": self.token}
+        )
+        return response.status_code == 204
+
+
+class JoplinEventsAPI(JoplinBaseApi):
+    """
+    Joplin API for events.
+    """
+
+    def get_all_events(self, cursor=None):
+        """Get a paginated list of recent events."""
+        # TODO: Figure out what cursor is
+        params = {"token": self.token}
+        if cursor:
+            params["cursor"] = cursor
+        response = requests.get(f"{self.base_url}/events", params=params)
+        return response.json()
+
+    def get_event(self, event_id):
+        """Get a specific event by its ID."""
+        response = requests.get(
+            f"{self.base_url}/events/{event_id}", params={"token": self.token}
+        )
+        return response.json()
