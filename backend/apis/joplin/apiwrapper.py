@@ -135,6 +135,13 @@ class JoplinNotesAPI(JoplinBaseApi):
         return response.json()
 
     # TODO: Implement fetching limited number of notes
+    def fetch_notes(self, limit=10):
+        """Fetch a limited number of notes from Joplin API"""
+        response = requests.get(
+            f"{self.base_url}/notes", params={"token": self.token, "limit": limit}
+        )
+
+        return response.json()
 
     def fetch_all_notes(
         self, page=1, limit=10, order_by="updated_time", order_dir="ASC"
@@ -546,7 +553,7 @@ class JoplinEventsAPI(JoplinBaseApi):
 
     def get_all_events(self, cursor=None):
         """Get a paginated list of recent events."""
-        # TODO: Figure out what cursor is
+        # TODO: Figure out
         params = {"token": self.token}
         if cursor:
             params["cursor"] = cursor
