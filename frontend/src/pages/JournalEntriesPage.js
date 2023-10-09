@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import JournalEntriesList from '../components/JournalEntriesList';
 import JournalService from '../services/JournalService';
-import { Link } from 'react-router-dom';
 
 function JournalsPage() {
     const [journalEntries, setJournalEntries] = useState([]);
