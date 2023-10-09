@@ -135,7 +135,7 @@ class JoplinNotesAPI(JoplinBaseApi):
         return response.json()
 
     # TODO: Implement fetching limited number of notes
-    def fetch_notes(self, limit=10):
+    def get_notes(self, limit=10):
         """Fetch a limited number of notes from Joplin API"""
         response = requests.get(
             f"{self.base_url}/notes", params={"token": self.token, "limit": limit}
